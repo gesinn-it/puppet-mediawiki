@@ -1,6 +1,6 @@
 == Mediawiki module for Puppet ==
 
-=== Nexus' fork ===
+=== NexusIS' fork ===
 
 This fork brings the module up to date with latest dependency modules as well as adds a Type and Provider for MediaWiki Extensions.  
 
