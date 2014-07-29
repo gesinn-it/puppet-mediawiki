@@ -61,7 +61,7 @@ Since puppet cannot ensure that all parent directories exist you need to
 manage these yourself. Therefore, make sure that all parent directories of
 `doc_root` directory, an attribute of `mediawiki` class, exist.
 
-=== Notes On Testing ===
+== Notes On Testing ==
 
 Puppet module tests reside in the `spec` directory. To run tests, execute 
 `rake spec` anywhere in the module's directory. More information about module 
@@ -69,7 +69,7 @@ testing can be found here:
 
 [http://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing The Next Generation of Puppet Module Testing]
 
-=== Reference
+== Reference ==
 
 This module is based on puppet-mediawiki by martasd and NexusIS available at
 https://github.com/martasd/puppet-mediawiki and https://github.com/NexusIS/puppet-mediawiki.
