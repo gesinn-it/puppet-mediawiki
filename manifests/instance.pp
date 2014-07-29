@@ -46,7 +46,7 @@ define mediawiki::instance (
   $port                   = '80',
   $server_aliases         = '',
   $ensure                 = 'present',
-  $allow_html_email      = 'false',
+  $allow_html_email       = false,
   $additional_mail_params = 'none',
   $logo_url               = false,
   $external_smtp          = false,
@@ -86,7 +86,7 @@ define mediawiki::instance (
     if ! $smtp_password { fail("'smtp_password' required when 'external_smtp' is true.") }
     $wgsmtp = "array('host' => '${smtp_host}', 'idhost' => '${smtp_idhost}', 'port' => '${smtp_port}', 'auth' => '${smtp_auth}', 'username' => '${smtp_username}', 'password' => '${smtp_password}')"
   } else {
-    $wgsmtp = "false"
+    $wgsmtp = false
   }
 
   # Figure out how to improve db security (manually done by

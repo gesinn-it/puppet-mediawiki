@@ -2,10 +2,9 @@
   "name": "hexmode-mediawiki",
   "version": "0.4.0",
   "source": "git@github.com:hexmode/puppet-mediawiki.git",
-  "author": ["Martin Dluhos", "Mark A. Hershberger"],
+  "author": "Mark A. Hershberger",
   "license": "GPLv3",
   "summary": "Puppet module for single and multi-tenant Mediawiki installation.",
-  "description": "Deploy and manage Mediawiki instances.",
   "project_page": "https://github.com/hexmode/puppet-mediawiki",
   "dependencies": [
     {

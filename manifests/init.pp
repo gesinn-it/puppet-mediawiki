@@ -40,7 +40,8 @@ define mediawiki::manage_extension(
   $ensure,
   $instance,
   $source,
-  $doc_root
+  $doc_root,
+  $wiki_name
  ){
   $extension = $name
   $line = "require_once( \"${doc_root}/${instance}/extensions/ConfirmAccount/ConfirmAccount.php\" );"
