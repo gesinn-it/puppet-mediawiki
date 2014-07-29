@@ -1,14 +1,18 @@
-# Mediawiki module for Puppet (forked by NexusIS)
+== Mediawiki module for Puppet ==
 
-## Nexus IS Fork
+=== Nexus' fork ===
 
 This fork brings the module up to date with latest dependency modules as well as adds a Type and Provider for MediaWiki Extensions.  
 
-## Description
+=== hexmode's fork ===
+
+This fork is intended to adapt the module to my client's needs and (hopefully) incorporate some of the work from [http://www.mediawiki.org/wiki/MediaWiki-Vagrant MediaWiki-Vagrant].
+
+=== Description ===
 
 This module deploys and manages multiple mediawiki instances using a single mediawiki installation. This module has been designed and tested for CentOS 6, Red Hat Enterprise Linux 6, Debian Squeeze, Debian Wheezy, and Ubuntu Precise.
 
-## Usage
+=== Usage ===
 
 First, install the mediawiki package which will be used by all wiki instances:
 
@@ -51,21 +55,21 @@ You can now also manage Extensions:
   }
 
 
-## Preconditions
+=== Preconditions ===
 
 Since puppet cannot ensure that all parent directories exist you need to
 manage these yourself. Therefore, make sure that all parent directories of
 `doc_root` directory, an attribute of `mediawiki` class, exist.
 
-## Notes On Testing
+=== Notes On Testing ===
 
 Puppet module tests reside in the `spec` directory. To run tests, execute 
 `rake spec` anywhere in the module's directory. More information about module 
 testing can be found here:
 
-[The Next Generation of Puppet Module Testing](http://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing)
+[http://puppetlabs.com/blog/the-next-generation-of-puppet-module-testing The Next Generation of Puppet Module Testing]
 
-## Reference
+=== Reference
 
-This module is based on puppet-mediawiki by martasd available at
-https://github.com/martasd/puppet-mediawiki.
+This module is based on puppet-mediawiki by martasd and NexusIS available at
+https://github.com/martasd/puppet-mediawiki and https://github.com/NexusIS/puppet-mediawiki.
