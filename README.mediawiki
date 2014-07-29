@@ -23,7 +23,7 @@ First, install the mediawiki package which will be used by all wiki instances:
     doc_root         => '/var/www/wikis'
     max_memory       => '1024'
   }
-    
+
 Next, create an individual wiki instance:
 
   mediawiki::instance { 'my_wiki1':
