@@ -1,12 +1,12 @@
 {
-  "name": "martasd-mediawiki",
-  "version": "0.3.0",
-  "source": "git@github.com:martasd/puppet-mediawiki.git",
-  "author": "Martin Dluhos",
+  "name": "hexmode-mediawiki",
+  "version": "0.4.0",
+  "source": "git@github.com:hexmode/puppet-mediawiki.git",
+  "author": ["Martin Dluhos", "Mark A. Hershberger"],
   "license": "GPLv3",
-  "summary": "Puppet module for multi-tenant Mediawiki installation.",
-  "description": "Deploy and manage multiple Mediawiki instances using only one installation.",
-  "project_page": "https://github.com/martasd/puppet-mediawiki",
+  "summary": "Puppet module for single and multi-tenant Mediawiki installation.",
+  "description": "Deploy and manage Mediawiki instances.",
+  "project_page": "https://github.com/hexmode/puppet-mediawiki",
   "dependencies": [
     {
       "name": "puppetlabs/apache",
@@ -24,31 +24,5 @@
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 3.0.0"
     }
-  ],
-  "types": [
-
-  ],
-  "checksums": {
-    "CHANGELOG": "af50d1c1d76211f95dc766ea097a7b9c",
-    "LICENSE": "d32239bcb673463ab874e80d47fae504",
-    "Modulefile": "6981868fec6f57137c02f90bc462134d",
-    "README.md": "69977b0bcaeab715e9a0b43f6354e24e",
-    "Rakefile": "f37e6131fe7de9a49b09d31596f5fbf1",
-    "lib/puppet/parser/functions/gen_target_path.rb": "0813a7a2e7cc994d4dd09f57e6dabde5",
-    "manifests/files.pp": "a4361aeebfa47c5b3d1d998ccc62593b",
-    "manifests/init.pp": "d7f09a44013f8889455786d15de9084e",
-    "manifests/instance.pp": "4805d8b693f92d48339ee98ba12e7881",
-    "manifests/params.pp": "730b8b3a2627f062b0710f0268fa8480",
-    "manifests/symlinks.pp": "2791d55959ec09768fc11899bc9528e5",
-    "spec/classes/mediawiki_spec.rb": "a366727f2750208d4f5a884b8aaeb9c5",
-    "spec/classes/params_spec.rb": "d474ee514887650f455b9b438b36b5d2",
-    "spec/defines/files_spec.rb": "5ef5607bb139d16fd77774167f20e3f5",
-    "spec/defines/instance_spec.rb": "828e31efac16e5391564dc94122ef952",
-    "spec/defines/symlinks_spec.rb": "3f827efb72c457ebb69270a8de7a3dcc",
-    "spec/fixtures/manifests/site.pp": "d41d8cd98f00b204e9800998ecf8427e",
-    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
-    "spec/spec_helper.rb": "3ea886dd135e120afa31e0aab12e85b0",
-    "tests/init.pp": "31aeb3585739f13725ac0e04b26baa46",
-    "tests/instance.pp": "1d00ce3b80585811c8825174f5a51435"
-  }
+  ]
 }
