@@ -50,12 +50,12 @@ define mediawiki::instance (
   $additional_mail_params = 'none',
   $logo_url               = false,
   $external_smtp          = false,
-  $smtp_idhost,
-  $smtp_host,
-  $smtp_port,
-  $smtp_auth,
-  $smtp_username,
-  $smtp_password,
+  $smtp_idhost            = undef,
+  $smtp_host              = undef,
+  $smtp_port              = undef,
+  $smtp_auth              = undef,
+  $smtp_username          = undef,
+  $smtp_password          = undef,
   ) {
   
   validate_re($ensure, '^(present|absent|deleted)$',
