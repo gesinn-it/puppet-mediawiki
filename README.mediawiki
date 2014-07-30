@@ -20,7 +20,7 @@ First, install the mediawiki package which will be used by all wiki instances:
     server_name      => 'www.example.com',
     admin_email      => 'admin@puppetlabs.com',
     db_root_password => 'really_really_long_password',
-    doc_root         => '/var/www/wikis'
+    doc_root         => '/var/www/wikis',
     max_memory       => '1024'
   }
 
