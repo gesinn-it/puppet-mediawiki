@@ -1,6 +1,6 @@
 {
   "name": "hexmode-mediawiki",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "source": "git@github.com:hexmode/puppet-mediawiki.git",
   "author": "Mark A. Hershberger",
   "license": "GPLv3",
