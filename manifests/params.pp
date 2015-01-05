@@ -59,21 +59,21 @@ class mediawiki::params {
     redhat, centos:  {
       $web_dir            = '/var/www/html'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php-gd', 'php-mysql', 'php-xml', 'wget', 'php-pecl-apcu', 'php-intl']
+      $packages           = ['php-gd', 'php-mysql', 'php-xml', 'wget', 'axel', 'php-pecl-apcu', 'php-intl']
       $apache             = 'httpd'
       $apache_user        = 'apache'
     }
     debian:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php5', 'php5-mysql', 'wget']
+      $packages           = ['php5', 'php5-mysql', 'wget', 'axel']
       $apache             = 'apache2'
       $apache_user        = 'www-data'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php5', 'php5-mysql', 'wget']
+      $packages           = ['php5', 'php5-mysql', 'wget', 'axel']
       $apache             = 'apache2'
       $apache_user        = 'www-data'
     }
