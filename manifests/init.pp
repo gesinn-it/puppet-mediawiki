@@ -127,12 +127,13 @@ class mediawiki (
     require => Package[$mediawiki::params::packages],
   }  
   
-  # Download and install MediaWiki from a tarball
+  # Download and install MediaWiki from a tarball using axel with 10 connections
   exec { "get-mediawiki":
     cwd       => $web_dir,
-    command   => "/usr/bin/wget ${tarball_url}",
+    command   => "/usr/bin/axel -n 10 ${tarball_url}",
     creates   => "${web_dir}/${tarball_name}",
     subscribe => File['mediawiki_conf_dir'],
+    timeout   => 1200,
   }
     
   exec { "unpack-mediawiki":
@@ -140,6 +141,7 @@ class mediawiki (
     command   => "/bin/tar -xvzf ${tarball_name}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
+    timeout   => 1200,
   }
   
   class { 'memcached':
