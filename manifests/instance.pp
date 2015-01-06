@@ -123,10 +123,12 @@ define mediawiki::instance (
       }
 
       # MediaWiki DefaultSettings
+      /*
       file { "${mediawiki_conf_dir}/${name}/includes/DefaultSettings.php":
         ensure  =>  present,
         content =>  template('mediawiki/DefaultSettings.php.erb'),  
       }
+      */
 
       # Each instance needs a separate folder to upload images
       file { "${mediawiki_conf_dir}/${name}/images":
