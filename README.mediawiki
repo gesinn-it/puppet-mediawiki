@@ -34,6 +34,8 @@ Next, create an individual wiki instance:
     ensure      => 'present'
   }
 
+Admin login with username <code>admin</code>, password <code>puppet</code> 
+
 Using this module, one can create multiple independent wiki instances. To create another wiki instance, add the following puppet code:
 
   mediawiki::instance { 'my_wiki2':
