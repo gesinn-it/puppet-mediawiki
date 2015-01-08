@@ -131,6 +131,7 @@ define mediawiki::instance (
       */
 
       # Each instance needs a separate folder to upload images
+      /*
       file { "${mediawiki_conf_dir}/${name}/images":
         ensure   => directory,
         group => $::operatingsystem ? {
@@ -139,19 +140,30 @@ define mediawiki::instance (
           default               => undef,
         }
       }
+      */
       
       # Ensure that mediawiki configuration files are included in each instance.
+      /*
       mediawiki::symlinks { $name:
         conf_dir      => $mediawiki_conf_dir,
         install_files => $mediawiki_install_files,
         target_dir    => $mediawiki_install_path,
       }
+      */
 
       # Symlink for the mediawiki instance directory
+      /*
       file { "${doc_root}/${name}":
         ensure   => link,
         target   => "${mediawiki_conf_dir}/${name}",
         require  => File["${mediawiki_conf_dir}/${name}"],
+      }
+      */
+      
+      file { "${doc_root}/${name}":
+        source  => $mediawiki_install_path,
+        recurse => true,
+        require => File["${mediawiki_conf_dir}/${name}"],
       }
      
       # Each instance has a separate vhost configuration
