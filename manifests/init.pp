@@ -114,8 +114,8 @@ class mediawiki (
   file { 'mediawiki_conf_dir':
     ensure  => 'directory',
     path    => $mediawiki::params::conf_dir,
-    owner   => 'apache',
-    group   => 'apache',
+    owner   => $mediawiki::params::apache_user,
+    group   => $mediawiki::params::apache_user",
     mode    => '0755',
     require => Package[$mediawiki::params::packages],
   }  
