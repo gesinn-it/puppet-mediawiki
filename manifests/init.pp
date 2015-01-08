@@ -41,41 +41,34 @@ define mediawiki::manage_extension(
   $instance,
   $source,
   $doc_root,
-  $wiki_name
+  $extension_name
  ){
-  $extension = $name
-  $line = "require_once( \"${doc_root}/${instance}/extensions/ConfirmAccount/ConfirmAccount.php\" );"
-  $path = "${doc_root}/${instance}/LocalSettings.php"
+  $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
+  $localsettings_path = "${doc_root}/${instance}/LocalSettings.php"
  
-  mediawiki_extension { $extension:
+  mediawiki_extension { "${extension_name}":
     ensure    =>  present,
-    instance  =>  $wiki_name,
+    instance  =>  $instance,
     source    =>  $source,
     doc_root  =>  $doc_root, 
-    notify  =>  Exec["set_${extension}_perms"],
+    notify  =>  Exec["set_${extension_name}_perms"],
   }
 
-  file_line{"${extension}_include":
+  ## Add extension to LocalSettings.php
+  file_line { "${extension_name}_include":
     line    =>  $line,
     ensure  =>  $ensure,
-    path    =>  $path,
-    require =>  Mediawiki_extension['ConfirmAccount'],
-    notify  =>  Exec["set_${extension}_perms"],
+    path    =>  $localsettings_path,
+    require =>  Mediawiki_extension["${extension_name}"],
+    notify  =>  Exec["set_${extension_name}_perms"],
   }
-  File_line["${extension}_include"] ~> Service<| title == 'httpd' |>
-  exec{"set_${extension}_perms":
+  
+  ## Notify httpd service
+  # File_line["${extension_name}_include"] ~> Service<| title == 'httpd' |>
+  
+  exec{"set_${extension_name}_perms":
     command     =>  "/bin/chown -R ${mediawiki::params::apache_user}:${mediawiki::params::apache_user} ${doc_root}/${instance}",
     refreshonly =>  true,
-    notify  =>  Exec["set_${extension}_perms_two"],
-  }
-  exec{"set_${extension}_perms_two":
-    command     =>  "/bin/chown -R ${mediawiki::params::apache_user}:${mediawiki::params::apache_user} /etc/mediawiki/${instance}",
-    refreshonly =>  true,
-    notify  =>  Exec["set_${extension}_perms_three"],
-  }
-  exec{"set_${extension}_perms_three":
-    command     =>  "/bin/chown -R ${mediawiki::params::apache_user}:${mediawiki::params::apache_user} /var/www/html/mediawiki*",
-    refreshonly =>  true
   }
 }
 
