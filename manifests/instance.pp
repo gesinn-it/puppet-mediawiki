@@ -93,13 +93,6 @@ define mediawiki::instance (
   # mysql_secure_installation)
   case $ensure {
     'present', 'absent': {
-      
-      exec { "${name}-install_script":
-        cwd         => "${mediawiki_install_path}/maintenance",
-        command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${mediawiki_conf_dir}/${name} --lang en",
-        creates     => "${mediawiki_conf_dir}/${name}/LocalSettings.php",
-        subscribe   => File["${doc_root}/${name}"],
-      }
 
       # Ensure resource attributes common to all resources
       File {
@@ -109,6 +102,25 @@ define mediawiki::instance (
         mode   => '0755',
       }
 
+      # MediaWiki instance directory
+      file { "${mediawiki_conf_dir}/${name}":
+        ensure   => directory,
+      }
+
+      file { "${doc_root}/${name}":
+        source  => $mediawiki_install_path,
+        recurse => true,
+        require => File["${mediawiki_conf_dir}/${name}"],
+      }
+      File["${mediawiki_conf_dir}/${name}"] -> File["${doc_root}/${name}"]
+      
+      exec { "${name}-install_script":
+        cwd         => "${mediawiki_install_path}/maintenance",
+        command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${mediawiki_conf_dir}/${name} --lang en",
+        creates     => "${mediawiki_conf_dir}/${name}/LocalSettings.php",
+      }
+      File["${doc_root}/${name}"] -> Exec["${name}-install_script"]
+
       # MediaWIki Custom Logo
       if $logo_url {
         file_line{"${name}_logo_url":
@@ -117,10 +129,7 @@ define mediawiki::instance (
         }
       }
 
-      # MediaWiki instance directory
-      file { "${mediawiki_conf_dir}/${name}":
-        ensure   => directory,
-      }
+
 
       # MediaWiki DefaultSettings
       /*
@@ -160,11 +169,6 @@ define mediawiki::instance (
       }
       */
       
-      file { "${doc_root}/${name}":
-        source  => $mediawiki_install_path,
-        recurse => true,
-        require => File["${mediawiki_conf_dir}/${name}"],
-      }
      
       # Each instance has a separate vhost configuration
       apache::vhost { $name:
