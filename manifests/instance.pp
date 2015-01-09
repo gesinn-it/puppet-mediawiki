@@ -76,6 +76,8 @@ define mediawiki::instance (
   $mediawiki_conf_dir      = $mediawiki::params::conf_dir
   $mediawiki_install_files = $mediawiki::params::installation_files
   $apache_daemon           = $mediawiki::params::apache_daemon
+  $apache_user             = $mediawiki::params::apache_user
+  $apache_group            = $mediawiki::params::apache_user
 
   if $external_smtp {
     if ! $smtp_idhost   { fail("'smtp_idhost' required when 'external_smtp' is true.") }
@@ -97,14 +99,16 @@ define mediawiki::instance (
       file { "${doc_root}/${name}":
         source  => $mediawiki_install_path,
         recurse => true,        
-        owner => $mediawiki::params::apache_user,
-        group => $mediawiki::params::apache_user,
+        owner => $apache_user,
+        group => $apache_group,
       }
 
       exec { "${name}-install_script":
-        cwd         => "${doc_root}/${name}/maintenance",
-        command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${doc_root}/${name} --lang en",
-        creates     => "${doc_root}/${name}/LocalSettings.php",
+        cwd     => "${doc_root}/${name}/maintenance",
+        command => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${doc_root}/${name} --lang en",
+        creates => "${doc_root}/${name}/LocalSettings.php",
+        owner   => $apache_user,
+        group   => $apache_group,
       }
       File["${doc_root}/${name}"] -> Exec["${name}-install_script"]
 
