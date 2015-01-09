@@ -121,7 +121,7 @@ define mediawiki::instance (
       File["${mediawiki_conf_dir}/${name}"] -> File["${doc_root}/${name}"]
       
       exec { "${name}-install_script":
-        cwd         => "${mediawiki_install_path}/maintenance",
+        cwd         => "${mediawiki_conf_dir}/${name}/maintenance",
         command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${mediawiki_conf_dir}/${name} --lang en",
         creates     => "${mediawiki_conf_dir}/${name}/LocalSettings.php",
       }
