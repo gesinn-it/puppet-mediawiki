@@ -103,7 +103,7 @@ define mediawiki::instance (
 
       exec { "${name}-install_script":
         cwd         => "${doc_root}/${name}/maintenance",
-        command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${mediawiki_conf_dir}/${name} --lang en",
+        command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${doc_root}/${name} --lang en",
         creates     => "${doc_root}/${name}/LocalSettings.php",
       }
       File["${doc_root}/${name}"] -> Exec["${name}-install_script"]
