@@ -95,12 +95,14 @@ define mediawiki::instance (
     'present', 'absent': {
 
       # Ensure resource attributes common to all resources
+      /*
       File {
         ensure => directory,
         owner  => 'apache',
         group  => 'apache',
         mode   => '0755',
       }
+      */
 
       # MediaWiki instance directory
       file { "${mediawiki_conf_dir}/${name}":
