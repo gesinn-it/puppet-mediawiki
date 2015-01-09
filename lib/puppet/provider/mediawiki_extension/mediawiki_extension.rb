@@ -35,7 +35,7 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
     # Fetch code to tmp
     curl('-o', "/tmp/#{name}.tar.gz", "#{source}")
     # Make deploy dir
-    File.directory?("#{doc_root}/#{instance}/extensions/#{name}") or Dir.mkdir("#{doc_root}/#{instance}/extensions/#{name}", 750)
+    File.directory?("#{doc_root}/#{instance}/extensions/#{name}") or Dir.mkdir("#{doc_root}/#{instance}/extensions/#{name}", 0755)
     # Unpack code to Extensions dir
     tar('-xzf', "/tmp/#{name}.tar.gz", '-C', "#{doc_root}/#{instance}/extensions/#{name}", "--strip-components=1")
     # sync db
