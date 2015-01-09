@@ -94,48 +94,30 @@ define mediawiki::instance (
   case $ensure {
     'present', 'absent': {
 
-      # Ensure resource attributes common to all resources
-      /*
-      File {
-        ensure => directory,
-        owner  => 'apache',
-        group  => 'apache',
-        mode   => '0755',
-      }
-      */
-
-      # MediaWiki instance directory
-      file { "${mediawiki_conf_dir}/${name}":
-        ensure   => directory,
-        owner => $mediawiki::params::apache_user,
-        group => $mediawiki::params::apache_user,
-      }
-
       file { "${doc_root}/${name}":
         source  => $mediawiki_install_path,
         recurse => true,        
         owner => $mediawiki::params::apache_user,
         group => $mediawiki::params::apache_user,
-        require => File["${mediawiki_conf_dir}/${name}"],
       }
-      File["${mediawiki_conf_dir}/${name}"] -> File["${doc_root}/${name}"]
-      
+
       exec { "${name}-install_script":
-        cwd         => "${mediawiki_conf_dir}/${name}/maintenance",
+        cwd         => "${doc_root}/${name}/maintenance",
         command     => "/usr/bin/php install.php ${name} admin --pass puppet --email ${admin_email} --server http://${server_name} --scriptpath /${name} --dbtype mysql --dbserver localhost --installdbuser root --installdbpass ${db_root_password} --dbname ${db_name} --dbuser ${db_user} --dbpass ${db_password} --db-prefix ${db_prefix} --confpath ${mediawiki_conf_dir}/${name} --lang en",
-        creates     => "${mediawiki_conf_dir}/${name}/LocalSettings.php",
+        creates     => "${doc_root}/${name}/LocalSettings.php",
       }
       File["${doc_root}/${name}"] -> Exec["${name}-install_script"]
 
+
       # MediaWIki Custom Logo
+      /*
       if $logo_url {
         file_line{"${name}_logo_url":
           path  =>  "${mediawiki_conf_dir}/${name}/LocalSettings.php",
           line  =>  "\$wgLogo = '${logo_url}';",
         }
       }
-
-
+      */
 
       # MediaWiki DefaultSettings
       /*
