@@ -107,11 +107,15 @@ define mediawiki::instance (
       # MediaWiki instance directory
       file { "${mediawiki_conf_dir}/${name}":
         ensure   => directory,
+        owner => $mediawiki::params::apache_user,
+        group => $mediawiki::params::apache_user,
       }
 
       file { "${doc_root}/${name}":
         source  => $mediawiki_install_path,
-        recurse => true,
+        recurse => true,        
+        owner => $mediawiki::params::apache_user,
+        group => $mediawiki::params::apache_user,
         require => File["${mediawiki_conf_dir}/${name}"],
       }
       File["${mediawiki_conf_dir}/${name}"] -> File["${doc_root}/${name}"]
