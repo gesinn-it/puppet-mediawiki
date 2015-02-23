@@ -1,4 +1,4 @@
-Puppet::Type.newtype(:mediawiki_extension) do
+Puppet::Type.newtype(:mediawiki_extension_composer) do
     @doc = "Manage MediaWiki Extensions via Composer"
 
     ensurable
