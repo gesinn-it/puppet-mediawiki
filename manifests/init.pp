@@ -41,7 +41,8 @@ define mediawiki::manage_extension(
   $instance,
   $source,
   $doc_root,
-  $extension_name
+  $extension_name,
+  $extension_config
  ){
   $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
   $localsettings_path = "${doc_root}/${instance}/LocalSettings.php"
@@ -60,7 +61,17 @@ define mediawiki::manage_extension(
     ensure  =>  $ensure,
     path    =>  $localsettings_path,
     require =>  Mediawiki_extension["${extension_name}"],
-    notify  =>  Exec["set_${extension_name}_perms"],
+    # notify  =>  Exec["set_${extension_name}_perms"],
+  }
+  
+  ## Add extension configurations to LocalSettings.php
+  each($extension_config) |$line| {
+    file_line { "${extension_name}_include":
+      line    =>  $line,
+      ensure  =>  $ensure,
+      path    =>  $localsettings_path,
+      require =>  Mediawiki_extension["${extension_name}"],
+    }
   }
   
   ## Notify httpd service
