@@ -109,7 +109,12 @@ define mediawiki::instance (
         creates => "${doc_root}/${name}/LocalSettings.php",
         group   => $apache_group,
       }
+      
+      exec { "composer.json":
+        command => "cp ${doc_root}/${name}/composer-example.json ${doc_root}/${name}/composer.json",
+      }
       File["${doc_root}/${name}"] -> Exec["${name}-install_script"]
+      Exec["${name}-install_script"] -> Exec["composer.json"]
 
 
       # MediaWIki Custom Logo
