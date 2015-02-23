@@ -38,6 +38,7 @@ define mediawiki::manage_extension(
   $ensure,
   $instance,
   $source,
+  $source_version = "",
   $doc_root,
   $extension_name,
   $extension_config = "",
@@ -53,7 +54,17 @@ define mediawiki::manage_extension(
         instance  =>  $instance,
         source    =>  $source,
         doc_root  =>  $doc_root, 
-        notify  =>  Exec["set_${extension_name}_perms"],
+        notify    =>  Exec["set_${extension_name}_perms"],
+      }
+    }
+    composer: {
+      mediawiki_extension_composer { "${extension_name}":
+        ensure          =>  present,
+        instance        =>  $instance,
+        source          =>  $source,
+        source_version  =>  $source_version,
+        doc_root        =>  $doc_root, 
+        notify          =>  Exec["set_${extension_name}_perms"],
       }
     }
     default: {
