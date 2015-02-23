@@ -70,15 +70,17 @@ define mediawiki::manage_extension(
     # notify  =>  Exec["set_${extension_name}_perms"],
   }
   
-  ## Add extension configurations to LocalSettings.php
-  each($extension_config) |$line| {
-    $uid = md5($line)
-    file_line { "${extension_name}_include_${uid}":
-      line      =>  $line,
-      ensure    =>  $ensure,
-      path      =>  $localsettings_path,
-      require   =>  Mediawiki_extension["${extension_name}"],
-      subscribe =>  File_line["${extension_name}_include"],
+  ## Add extension configuration parameter to LocalSettings.php
+  if $extension_config > "" {
+    each($extension_config) |$line| {
+      $uid = md5($line)
+      file_line { "${extension_name}_include_${uid}":
+        line      =>  $line,
+        ensure    =>  $ensure,
+        path      =>  $localsettings_path,
+        require   =>  Mediawiki_extension["${extension_name}"],
+        subscribe =>  File_line["${extension_name}_include"],
+      }
     }
   }
   
