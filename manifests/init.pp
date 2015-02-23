@@ -54,6 +54,7 @@ define mediawiki::manage_extension(
         instance  =>  $instance,
         source    =>  $source,
         doc_root  =>  $doc_root, 
+        before    =>  File_line["${extension_name}_include"],
         notify    =>  Exec["set_${extension_name}_perms"],
       }
     }
@@ -64,6 +65,7 @@ define mediawiki::manage_extension(
         source          =>  $source,
         source_version  =>  $source_version,
         doc_root        =>  $doc_root, 
+        before          =>  File_line["${extension_name}_include"],
         notify          =>  Exec["set_${extension_name}_perms"],
       }
     }
@@ -77,8 +79,6 @@ define mediawiki::manage_extension(
     line    =>  $line,
     ensure  =>  $ensure,
     path    =>  $localsettings_path,
-    subscribe =>  Mediawiki_extension["${extension_name}"],
-    subscribe =>  Mediawiki_extension_composer["${extension_name}"],
     # notify  =>  Exec["set_${extension_name}_perms"],
   }
   
