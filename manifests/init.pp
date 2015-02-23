@@ -113,6 +113,11 @@ class mediawiki (
   Class['mysql::server'] -> Class['mediawiki']
   #Class['mysql::config'] -> Class['mediawiki']
   
+  class { 'composer':
+    command_name => 'composer',
+    target_dir   => '/usr/local/bin'
+  }
+  
   class { 'apache': 
     mpm_module => 'prefork',
   }
