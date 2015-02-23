@@ -40,7 +40,7 @@ define mediawiki::manage_extension(
   $source,
   $doc_root,
   $extension_name,
-  $extension_config,
+  $extension_config => "",
   $install_type,
  ){
   $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
