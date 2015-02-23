@@ -66,7 +66,8 @@ define mediawiki::manage_extension(
   
   ## Add extension configurations to LocalSettings.php
   each($extension_config) |$line| {
-    file_line { "${extension_name}_include":
+    $uid = md5($line)
+    file_line { "${extension_name}_include_${uid}":
       line    =>  $line,
       ensure  =>  $ensure,
       path    =>  $localsettings_path,
