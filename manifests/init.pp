@@ -68,10 +68,11 @@ define mediawiki::manage_extension(
   each($extension_config) |$line| {
     $uid = md5($line)
     file_line { "${extension_name}_include_${uid}":
-      line    =>  $line,
-      ensure  =>  $ensure,
-      path    =>  $localsettings_path,
-      require =>  Mediawiki_extension["${extension_name}"],
+      line      =>  $line,
+      ensure    =>  $ensure,
+      path      =>  $localsettings_path,
+      require   =>  Mediawiki_extension["${extension_name}"],
+      subscribe =>  File_line["${extension_name}_include"],
     }
   }
   
