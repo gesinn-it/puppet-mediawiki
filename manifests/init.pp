@@ -77,7 +77,8 @@ define mediawiki::manage_extension(
     line    =>  $line,
     ensure  =>  $ensure,
     path    =>  $localsettings_path,
-    require =>  Mediawiki_extension["${extension_name}"],
+    subscribe =>  Mediawiki_extension["${extension_name}"],
+    subscribe =>  Mediawiki_extension_composer["${extension_name}"],
     # notify  =>  Exec["set_${extension_name}_perms"],
   }
   
@@ -89,7 +90,6 @@ define mediawiki::manage_extension(
         line      =>  $line,
         ensure    =>  $ensure,
         path      =>  $localsettings_path,
-        require   =>  Mediawiki_extension["${extension_name}"],
         subscribe =>  File_line["${extension_name}_include"],
       }
     }
