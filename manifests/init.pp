@@ -31,28 +31,34 @@
 ## === Authors
 #
 # Martin Dluhos <martin@gnu.org>
+# Alexander Gesinn
 #
-# === Copyright
-#
-# Copyright 2012 Martin Dluhos
-#
+
 define mediawiki::manage_extension(
   $ensure,
   $instance,
   $source,
   $doc_root,
   $extension_name,
-  $extension_config
+  $extension_config,
+  $install_type,
  ){
   $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
   $localsettings_path = "${doc_root}/${instance}/LocalSettings.php"
  
-  mediawiki_extension { "${extension_name}":
-    ensure    =>  present,
-    instance  =>  $instance,
-    source    =>  $source,
-    doc_root  =>  $doc_root, 
-    notify  =>  Exec["set_${extension_name}_perms"],
+  case $install_type {
+    tar: {
+      mediawiki_extension { "${extension_name}":
+        ensure    =>  present,
+        instance  =>  $instance,
+        source    =>  $source,
+        doc_root  =>  $doc_root, 
+        notify  =>  Exec["set_${extension_name}_perms"],
+      }
+    }
+    default: {
+      fail("Unknown extension install type. Allowed values: tar")
+    }
   }
 
   ## Add extension to LocalSettings.php
