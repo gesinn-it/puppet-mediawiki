@@ -79,17 +79,22 @@ define mediawiki::manage_extension(
         line    =>  $line,
         ensure  =>  $ensure,
         path    =>  $localsettings_path,
-        # notify  =>  Exec["set_${extension_name}_perms"],
       }
     }
-    composer: {}
+    composer: {
+      file_line { "${extension_name}_include":
+        line    =>  "## ${extension_name} included",
+        ensure  =>  $ensure,
+        path    =>  $localsettings_path,
+      }    
+    }
     default: {
       fail("Unknown extension install type. Allowed values: tar")
     }
   }
   
   ## Add extension configuration parameter to LocalSettings.php
-  if $extension_config > "" {
+  if size($extension_config) > 0 {
     each($extension_config) |$line| {
       $uid = md5($line)
       file_line { "${extension_name}_include_${uid}":
