@@ -128,7 +128,8 @@ class mediawiki (
   
   class { 'composer':
     command_name => 'composer',
-    target_dir   => '/usr/local/bin'
+    target_dir   => '/usr/local/bin',
+    auto_update => true,
   }
   
   class { 'apache': 
