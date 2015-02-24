@@ -82,6 +82,7 @@ define mediawiki::manage_extension(
         # notify  =>  Exec["set_${extension_name}_perms"],
       }
     }
+    composer: {}
     default: {
       fail("Unknown extension install type. Allowed values: tar")
     }
