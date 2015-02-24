@@ -59,15 +59,18 @@ define mediawiki::manage_extension(
       }
     }
     composer: {
-      mediawiki_extension_composer { "${extension_name}":
-        ensure          =>  present,
-        instance        =>  $instance,
-        source          =>  $source,
-        source_version  =>  $source_version,
-        doc_root        =>  $doc_root, 
-        before          =>  File_line["${extension_name}_include"],
-        notify          =>  Exec["set_${extension_name}_perms"],
+      exec { "${extension_name}":
+        command => "export COMPOSER_HOME=/usr/local/bin && cd ${doc_root}/${instance} && composer require ${source} ${source_version}",
       }
+#      mediawiki_extension_composer { "${extension_name}":
+#        ensure          =>  present,
+#        instance        =>  $instance,
+#        source          =>  $source,
+#        source_version  =>  $source_version,
+#        doc_root        =>  $doc_root, 
+#        before          =>  File_line["${extension_name}_include"],
+#        notify          =>  Exec["set_${extension_name}_perms"],
+#      }
     }
     default: {
       fail("Unknown extension install type. Allowed values: tar")
