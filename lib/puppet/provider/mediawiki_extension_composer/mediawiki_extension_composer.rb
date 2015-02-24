@@ -30,11 +30,7 @@ Puppet::Type.type(:mediawiki_extension_composer).provide(:mediawiki_extension_co
 
 
   def create
-    exec { "${extension_name}_install":
-      command => "/usr/local/bin/composer require ${source} ${source_version}",
-      cwd => "${doc_root}/${instance}",
-      environment => ["COMPOSER_HOME=/usr/local/bin"],
-    }
+    exec("COMPOSER_HOME=/usr/local/bin", "cd #{doc_root}/#{instance} && /usr/local/bin/composer require #{source} #{source_version}")
     # update database
     php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
   end
