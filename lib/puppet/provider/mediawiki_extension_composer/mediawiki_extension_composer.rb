@@ -2,9 +2,9 @@ Puppet::Type.type(:mediawiki_extension_composer).provide(:mediawiki_extension_co
   
   desc = "Manage MediaWiki Extensions via Composer"
 
-  commands :cd => "cd"
-  commands :composer  => "composer"
-  commands :php => "php"
+  #commands :cd => "cd"
+  #commands :composer  => "composer"
+  #commands :php => "php"
 
   def doc_root
     resource[:doc_root]
