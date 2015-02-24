@@ -44,9 +44,10 @@ define mediawiki::manage_extension(
   $extension_config = "",
   $install_type,
  ){
-  $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
+
   $localsettings_path = "${doc_root}/${instance}/LocalSettings.php"
  
+  ## Install extension
   case $install_type {
     tar: {
       mediawiki_extension { "${extension_name}":
@@ -54,7 +55,7 @@ define mediawiki::manage_extension(
         instance  =>  $instance,
         source    =>  $source,
         doc_root  =>  $doc_root, 
-        before    =>  File_line["${extension_name}_include"],
+        #before    =>  File_line["${extension_name}_include"],
         notify    =>  Exec["set_${extension_name}_perms"],
       }
     }
@@ -71,14 +72,22 @@ define mediawiki::manage_extension(
       fail("Unknown extension install type. Allowed values: tar")
     }
   }
+  
+  ## Set File Owner
+  exec{"set_${extension_name}_perms":
+    command     =>  "/bin/chown -R ${mediawiki::params::apache_user}:${mediawiki::params::apache_user} ${doc_root}/${instance}",
+    refreshonly =>  true,
+  }
 
   ## Add extension to LocalSettings.php
+  $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
   case $install_type {
     tar: {
       file_line { "${extension_name}_include":
         line    =>  $line,
         ensure  =>  $ensure,
         path    =>  $localsettings_path,
+        subscribe =>  Exec["set_${extension_name}_perms"],
       }
     }
     composer: {
@@ -86,6 +95,7 @@ define mediawiki::manage_extension(
         line    =>  "## ${extension_name} included",
         ensure  =>  $ensure,
         path    =>  $localsettings_path,
+        subscribe =>  Exec["set_${extension_name}_perms"],
       }    
     }
     default: {
@@ -106,13 +116,15 @@ define mediawiki::manage_extension(
     }
   }
   
+  ## Update the database
+  exec { "${extension_name}_update_database":
+    command     =>  "/usr/bin/php ${doc_root}/${instance}/maintenance/update.php --conf ${doc_root}/${instance}/LocalSettings.php",
+    cwd         =>  "${doc_root}/${instance}",
+    subscribe =>  File_line["${extension_name}_include"],
+  }
+  
   ## Notify httpd service
   # File_line["${extension_name}_include"] ~> Service<| title == 'httpd' |>
-  
-  exec{"set_${extension_name}_perms":
-    command     =>  "/bin/chown -R ${mediawiki::params::apache_user}:${mediawiki::params::apache_user} ${doc_root}/${instance}",
-    refreshonly =>  true,
-  }
 }
 
 class mediawiki (
