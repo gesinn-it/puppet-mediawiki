@@ -118,8 +118,8 @@ define mediawiki::manage_extension(
   
   ## Update the database
   exec { "${extension_name}_update_database":
-    command     =>  "/usr/bin/php ${doc_root}/${instance}/maintenance/update.php --conf ${doc_root}/${instance}/LocalSettings.php",
-    cwd         =>  "${doc_root}/${instance}",
+    command     =>  "/usr/bin/php update.php --conf ../LocalSettings.php",
+    cwd         =>  "${doc_root}/${instance}/maintenance",
     subscribe =>  File_line["${extension_name}_include"],
   }
   
