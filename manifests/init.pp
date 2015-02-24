@@ -130,10 +130,9 @@ class mediawiki (
     command_name => 'composer',
     target_dir   => '/usr/local/bin',
     auto_update => true,
-    
-    file { "/etc/environment":
-        content => inline_template("COMPOSER_HOME=/usr/local/bin")
-    }
+  }
+  file { "/etc/environment":
+    content => inline_template("COMPOSER_HOME=/usr/local/bin")
   }
   
   class { 'apache': 
