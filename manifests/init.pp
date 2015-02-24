@@ -202,7 +202,7 @@ class mediawiki (
     
   exec { "unpack-mediawiki":
     cwd       => $web_dir,
-    command   => "/bin/tar -xvzf ${tarball_name}",
+    command   => "/bin/tar -xzf ${tarball_name}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
     timeout   => 1200,
