@@ -60,7 +60,9 @@ define mediawiki::manage_extension(
     }
     composer: {
       exec { "${extension_name}":
-        command => "export COMPOSER_HOME=/usr/local/bin && cd ${doc_root}/${instance} && composer require ${source} ${source_version}",
+        command     => "composer require ${source} ${source_version}",
+        cwd         => "${doc_root}/${instance}",
+        environment => ["COMPOSER_HOME=/usr/local/bin"],
       }
 #      mediawiki_extension_composer { "${extension_name}":
 #        ensure          =>  present,
