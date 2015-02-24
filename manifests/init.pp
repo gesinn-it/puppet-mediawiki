@@ -131,6 +131,7 @@ class mediawiki (
     target_dir   => '/usr/local/bin',
     auto_update => true,
   }
+  Exec { environment => [ "COMPOSER_HOME=/usr/local/bin" ] }
   
   class { 'apache': 
     mpm_module => 'prefork',
