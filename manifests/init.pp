@@ -59,22 +59,13 @@ define mediawiki::manage_extension(
       }
     }
     composer: {
+      # implemented as exec() as composer requires COMPOSER_PATH set
       exec { "${extension_name}":
-        command     => "/usr/local/bin/composer require ${source} ${source_version} && /usr/bin/php ${doc_root}/${instance}/maintenance/update.php --conf ${doc_root}/${instance}/LocalSettings.php",
-        cwd         => "${doc_root}/${instance}",
-        environment => ["COMPOSER_HOME=/usr/local/bin"],
-        before          =>  File_line["${extension_name}_include"],
-        notify          =>  Exec["set_${extension_name}_perms"],
+        command     =>  "/usr/local/bin/composer require ${source} ${source_version} && /usr/bin/php ${doc_root}/${instance}/maintenance/update.php --conf ${doc_root}/${instance}/LocalSettings.php",
+        cwd         =>  "${doc_root}/${instance}",
+        environment =>  ["COMPOSER_HOME=/usr/local/bin"],
+        notify      =>  Exec["set_${extension_name}_perms"],
       }
-#      mediawiki_extension_composer { "${extension_name}":
-#        ensure          =>  present,
-#        instance        =>  $instance,
-#        source          =>  $source,
-#        source_version  =>  $source_version,
-#        doc_root        =>  $doc_root, 
-#        before          =>  File_line["${extension_name}_include"],
-#        notify          =>  Exec["set_${extension_name}_perms"],
-#      }
     }
     default: {
       fail("Unknown extension install type. Allowed values: tar")
@@ -82,11 +73,18 @@ define mediawiki::manage_extension(
   }
 
   ## Add extension to LocalSettings.php
-  file_line { "${extension_name}_include":
-    line    =>  $line,
-    ensure  =>  $ensure,
-    path    =>  $localsettings_path,
-    # notify  =>  Exec["set_${extension_name}_perms"],
+  case $install_type {
+    tar: {
+      file_line { "${extension_name}_include":
+        line    =>  $line,
+        ensure  =>  $ensure,
+        path    =>  $localsettings_path,
+        # notify  =>  Exec["set_${extension_name}_perms"],
+      }
+    }
+    default: {
+      fail("Unknown extension install type. Allowed values: tar")
+    }
   }
   
   ## Add extension configuration parameter to LocalSettings.php
