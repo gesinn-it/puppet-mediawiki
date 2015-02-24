@@ -39,7 +39,7 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
     # Unpack code to Extensions dir
     tar('-xzf', "/tmp/#{name}.tar.gz", '-C', "#{doc_root}/#{instance}/extensions/#{name}", "--strip-components=1")
     # sync db
-    php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
+    #php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
   end
 
   def destroy
