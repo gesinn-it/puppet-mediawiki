@@ -32,7 +32,7 @@ Puppet::Type.type(:mediawiki_extension_composer).provide(:mediawiki_extension_co
 
 
   def create
-    bash ('-c', '"cd #{doc_root}/#{instance} && composer require #{source} #{source_version}"')
+    bash('-c', "cd #{doc_root}/#{instance} && composer require #{source} #{source_version}")
 
     # update database
     php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
