@@ -2,9 +2,9 @@ Puppet::Type.type(:mediawiki_extension_composer).provide(:mediawiki_extension_co
   
   desc = "Manage MediaWiki Extensions via Composer"
 
-  #commands :cd => "cd"
+  commands :bash => "bash"
   #commands :composer  => "composer"
-  #commands :php => "php"
+  commands :php => "php"
 
   def doc_root
     resource[:doc_root]
@@ -32,10 +32,10 @@ Puppet::Type.type(:mediawiki_extension_composer).provide(:mediawiki_extension_co
 
 
   def create
-    #cd("#{doc_root}/#{instance}", '&&', 'composer', 'require', "#{source}", "#{source_version}")
+    bash ('-c', '"cd #{doc_root}/#{instance} && composer require #{source} #{source_version}"')
 
     # update database
-    #php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
+    php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
   end
 
   def destroy
