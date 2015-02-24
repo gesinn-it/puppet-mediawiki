@@ -107,12 +107,20 @@ define mediawiki::manage_extension(
   if size($extension_config) > 0 {
     each($extension_config) |$line| {
       $uid = md5($line)
-      file_line { "${extension_name}_include_${uid}":
+      file_line { "${extension_name}_config_${uid}":
         line      =>  $line,
         ensure    =>  $ensure,
         path      =>  $localsettings_path,
         subscribe =>  File_line["${extension_name}_include"],
+        notify    => Exec["${extension_name}_update_database"],
       }
+    }
+  } else {
+    # dummy exec for calling database update
+    exec { "${extension_name}_config_done":
+      command => "/bin/true",
+      subscribe =>  File_line["${extension_name}_include"],
+      notify  => Exec["${extension_name}_update_database"],
     }
   }
   
@@ -120,7 +128,6 @@ define mediawiki::manage_extension(
   exec { "${extension_name}_update_database":
     command     =>  "/usr/bin/php update.php --conf ../LocalSettings.php",
     cwd         =>  "${doc_root}/${instance}/maintenance",
-    subscribe =>  File_line["${extension_name}_include"],
   }
   
   ## Notify httpd service
