@@ -79,28 +79,26 @@ define mediawiki::manage_extension(
     refreshonly =>  true,
   }
 
+  ## Add extension header to LocalSettings.php
+  file_line { "${extension_name}_header":
+    line    =>  "## -------- ${extension_name} --------,
+    ensure  =>  $ensure,
+    path    =>  $localsettings_path,
+    subscribe =>  Exec["set_${extension_name}_perms"],
+  }
+
   ## Add extension to LocalSettings.php
-  $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );"
   case $install_type {
-    tar: {
-      file_line { "${extension_name}_include":
-        line    =>  $line,
-        ensure  =>  $ensure,
-        path    =>  $localsettings_path,
-        subscribe =>  Exec["set_${extension_name}_perms"],
-      }
-    }
-    composer: {
-      file_line { "${extension_name}_include":
-        line    =>  "## ${extension_name} included",
-        ensure  =>  $ensure,
-        path    =>  $localsettings_path,
-        subscribe =>  Exec["set_${extension_name}_perms"],
-      }    
-    }
-    default: {
-      fail("Unknown extension install type. Allowed values: tar")
-    }
+    tar:      { $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );" }
+    composer: { $line = "# ${extension_name} included via Composer" }
+    default:  { fail("Unknown extension install type. Allowed values: tar")}
+  }
+
+  file_line { "${extension_name}_include":
+    line    =>  $line,
+    ensure  =>  $ensure,
+    path    =>  $localsettings_path,
+    subscribe =>  Exec["set_${extension_name}_header"],
   }
   
   ## Add extension configuration parameter to LocalSettings.php
