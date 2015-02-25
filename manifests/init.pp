@@ -81,7 +81,7 @@ define mediawiki::manage_extension(
 
   ## Add extension header to LocalSettings.php
   file_line { "${extension_name}_header":
-    line    =>  "## -------- ${extension_name} --------,
+    line    =>  "## -------- ${extension_name} --------",
     ensure  =>  $ensure,
     path    =>  $localsettings_path,
     subscribe =>  Exec["set_${extension_name}_perms"],
@@ -192,7 +192,7 @@ class mediawiki (
   
   # Download and install MediaWiki from a tarball using axel with 4 connections
   exec { "get-mediawiki":
-    cwd       => "${temp_dir}",
+    cwd       => $temp_dir,
     command   => "/usr/bin/axel -n 4 ${tarball_url}",
     creates   => "${temp_dir}/${tarball_name}",
     subscribe => File['mediawiki_conf_dir'],
@@ -200,7 +200,7 @@ class mediawiki (
   }
     
   exec { "unpack-mediawiki":
-    cwd       => "${temp_dir}",
+    cwd       => $temp_dir,
     command   => "/bin/tar -xzf ${tarball_name} -C ${web_dir}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
