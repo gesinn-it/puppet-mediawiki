@@ -98,7 +98,7 @@ define mediawiki::manage_extension(
     line    =>  $line,
     ensure  =>  $ensure,
     path    =>  $localsettings_path,
-    subscribe =>  Exec["set_${extension_name}_header"],
+    subscribe =>  Exec["${extension_name}_header"],
   }
   
   ## Add extension configuration parameter to LocalSettings.php
