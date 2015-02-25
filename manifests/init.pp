@@ -192,17 +192,17 @@ class mediawiki (
     require => Package[$mediawiki::params::packages],
   }  
   
-  # Download and install MediaWiki from a tarball using axel with 10 connections
+  # Download and install MediaWiki from a tarball using axel with 4 connections
   exec { "get-mediawiki":
-    cwd       => $temp_dir,
-    command   => "/usr/bin/axel -n 10 ${tarball_url}",
+    cwd       => "${temp_dir}",
+    command   => "/usr/bin/axel -n 4 ${tarball_url}",
     creates   => "${temp_dir}/${tarball_name}",
     subscribe => File['mediawiki_conf_dir'],
     timeout   => 1200,
   }
     
   exec { "unpack-mediawiki":
-    cwd       => $temp_dir,
+    cwd       => "${temp_dir}",
     command   => "/bin/tar -xzf ${tarball_name}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
