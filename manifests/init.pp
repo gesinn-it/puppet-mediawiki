@@ -194,7 +194,7 @@ class mediawiki (
   
   # Download and install MediaWiki from a tarball using axel with 10 connections
   exec { "get-mediawiki":
-    cwd       => $web_dir,
+    cwd       => $temp_dir,
     command   => "/usr/bin/axel -n 10 ${tarball_url}",
     creates   => "${temp_dir}/${tarball_name}",
     subscribe => File['mediawiki_conf_dir'],
