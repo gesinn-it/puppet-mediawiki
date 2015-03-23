@@ -182,7 +182,7 @@ class mediawiki (
         'init_connect' => 'SET NAMES utf8',
         'character-set-server' => 'utf8',
         'collation-server' => 'utf8_general_ci',
-        'skip-character-set-client-handshake',
+        'skip-character-set-client-handshake' => true,
       }
     }
   }
