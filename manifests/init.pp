@@ -62,7 +62,7 @@ define mediawiki::manage_extension(
     composer: {
       # implemented as exec() as composer requires COMPOSER_PATH set
       exec { "${extension_name}":
-        command     =>  "/usr/local/bin/composer require ${source} ${source_version}",
+        command     =>  "/usr/local/bin/composer require --prefer-dist ${source} ${source_version}",
         cwd         =>  "${doc_root}/${instance}",
         environment =>  ["COMPOSER_HOME=/usr/local/bin"],
         notify      =>  Exec["set_${extension_name}_perms"],
