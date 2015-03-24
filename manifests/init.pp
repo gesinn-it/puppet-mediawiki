@@ -89,7 +89,7 @@ define mediawiki::manage_extension(
 
   ## Add extension to LocalSettings.php
   case $install_type {
-    tar:      { $line = "require_once( \"${doc_root}/${instance}/extensions/${extension_name}/${extension_name}.php\" );" }
+    tar:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
     composer: { $line = "# ${extension_name} included via Composer" }
     default:  { fail("Unknown extension install type. Allowed values: tar")}
   }
