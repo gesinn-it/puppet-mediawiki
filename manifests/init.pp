@@ -64,7 +64,7 @@ define mediawiki::manage_extension(
       exec { "${extension_name}":
         command     =>  "/usr/local/bin/composer require --prefer-dist ${source} ${source_version}",
         cwd         =>  "${doc_root}/${instance}",
-        environment =>  ["COMPOSER_HOME=/usr/local/bin"],
+        environment =>  ["COMPOSER_HOME=/usr/local/bin", "COMPOSER_CACHE_DIR=/vagrant_share"],
         notify      =>  Exec["set_${extension_name}_perms"],
       }
     }
