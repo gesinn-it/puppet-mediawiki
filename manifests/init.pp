@@ -209,7 +209,7 @@ class mediawiki (
     command   => "/usr/bin/axel -n 4 ${tarball_url}",
     creates   => "${temp_dir}/${tarball_name}",
     subscribe => File['mediawiki_conf_dir'],
-    timeout   => 1200,
+    timeout   => 0,
   }
     
   exec { "unpack-mediawiki":
@@ -217,7 +217,7 @@ class mediawiki (
     command   => "/bin/tar -xzf ${tarball_name} -C ${web_dir}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
-    timeout   => 1200,
+    timeout   => 0,
   }
   
   class { 'memcached':
