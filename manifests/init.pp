@@ -139,6 +139,7 @@ class mediawiki (
   $db_root_password,
   $doc_root       = $mediawiki::params::doc_root,
   $tarball_url    = $mediawiki::params::tarball_url,
+  $tarball,
   $temp_dir       = '/tmp',
   $package_ensure = 'latest',
   $max_memory     = '2048'
@@ -147,8 +148,8 @@ class mediawiki (
   $web_dir = $mediawiki::params::web_dir
 
   # Parse the url
-  $tarball_dir              = regsubst($tarball_url, '^.*?/(\d\.\d+).*$', '\1')
-  $tarball_name             = regsubst($tarball_url, '^.*?/(mediawiki-\d\.\d+.*tar\.gz)$', '\1')
+  #$tarball_dir              = regsubst($tarball_url, '^.*?/(\d\.\d+).*$', '\1')
+  #$tarball_name             = regsubst($tarball_url, '^.*?/(mediawiki-\d\.\d+.*tar\.gz)$', '\1')
   $mediawiki_dir            = regsubst($tarball_url, '^.*?/(mediawiki-\d\.\d+\.\d+).*$', '\1')
   $mediawiki_install_path   = "${web_dir}/${mediawiki_dir}"
   
@@ -206,15 +207,15 @@ class mediawiki (
   # Download and install MediaWiki from a tarball using axel with 4 connections
   exec { "get-mediawiki":
     cwd       => $temp_dir,
-    command   => "/usr/bin/axel -n 4 ${tarball_url}",
-    creates   => "${temp_dir}/${tarball_name}",
+    command   => "/usr/bin/axel -n 4 ${tarball_url}/${tarball}",
+    creates   => "${temp_dir}/${tarball}",
     subscribe => File['mediawiki_conf_dir'],
     timeout   => 0,
   }
     
   exec { "unpack-mediawiki":
     cwd       => $temp_dir,
-    command   => "/bin/tar -xzf ${tarball_name} -C ${web_dir}",
+    command   => "/bin/tar -xzf ${tarball} -C ${web_dir}",
     creates   => $mediawiki_install_path,
     subscribe => Exec['get-mediawiki'],
     timeout   => 0,
