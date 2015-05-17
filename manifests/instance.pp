@@ -114,7 +114,7 @@ define mediawiki::instance (
       exec { "${name}-composer.json":
         command => "cp ${doc_root}/${name}/composer-example.json ${doc_root}/${name}/composer.json",
         path    => "/usr/local/bin/:/bin/",
-        onlyif  => "test -f ${doc_root}/${name}/composer-example.json",
+        creates => "${doc_root}/${name}/composer.json",
       }
       File["${doc_root}/${name}"] -> Exec["${name}-install_script"]
       Exec["${name}-install_script"] -> Exec["${name}-composer.json"]
