@@ -2,10 +2,8 @@ Puppet::Type.type(:mediawiki_extension_git).provide(:mediawiki_extension_git) do
   
   desc = "Manage Media Wiki Extensions via Git"
 
-  commands :cd   => "cd"
   commands :git  => "git"
   commands :rm   => "rm"
-  commands :curl => "curl"
 
 #  confine :osfamily => :RedHat
 #  defaultfor :operatingsystem => [:CentOS, :RedHat]
