@@ -49,16 +49,6 @@ define mediawiki::manage_extension(
  
   ## Install extension
   case $install_type {
-    tar: {
-      mediawiki_extension { "${extension_name}":
-        ensure    =>  present,
-        instance  =>  $instance,
-        source    =>  $source,
-        doc_root  =>  $doc_root, 
-        #before    =>  File_line["${extension_name}_include"],
-        notify    =>  Exec["set_${extension_name}_perms"],
-      }
-    }
     composer: {
       # implemented as exec() as composer requires COMPOSER_PATH set
       exec { "${extension_name}":
@@ -67,6 +57,26 @@ define mediawiki::manage_extension(
         environment =>  ["COMPOSER_HOME=/usr/local/bin", "COMPOSER_CACHE_DIR=/vagrant_share", "COMPOSER_PROCESS_TIMEOUT=600"],
         notify      =>  Exec["set_${extension_name}_perms"],
         timeout     =>  600,
+      }
+    }
+    git: {
+      mediawiki_extension_git { "${extension_name}":
+        ensure         => present,
+        instance       => $instance,
+        source         => $source,
+        source_version => $source_version,
+        doc_root       => $doc_root, 
+        notify         => Exec["set_${extension_name}_perms"],
+      }
+    }
+    tar: {
+      mediawiki_extension { "${extension_name}":
+        ensure   => present,
+        instance => $instance,
+        source   => $source,
+        doc_root => $doc_root, 
+        #before  => File_line["${extension_name}_include"],
+        notify   => Exec["set_${extension_name}_perms"],
       }
     }
     default: {
