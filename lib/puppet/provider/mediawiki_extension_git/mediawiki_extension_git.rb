@@ -1,4 +1,4 @@
-Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
+Puppet::Type.type(:mediawiki_extension_git).provide(:mediawiki_extension_git) do
   
   desc = "Manage Media Wiki Extensions via Git"
 
