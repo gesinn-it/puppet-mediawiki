@@ -40,7 +40,7 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
     git('clone', "#{source}", "#{doc_root}/#{instance}/extensions/#{name}")
     
     # Checkout
-    git('checkout', "#{source_version})
+    exec("cd #{doc_root}/#{instance}/extensions/#{name} && git checkout #{source_version}")
     
     # Update / Init Submodules
     exec("cd #{doc_root}/#{instance}/extensions/#{name} && git submodule update --init")
