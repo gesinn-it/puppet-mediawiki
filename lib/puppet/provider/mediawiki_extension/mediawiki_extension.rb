@@ -33,7 +33,7 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
 
   def create
     # Fetch code to tmp
-    curl('-R', %Q{"#{source}"}, '-z', "/vagrant_share/#{name}.tar.gz", '-o', "/vagrant_share/#{name}.tar.gz")
+    curl('-R', '-z', "/vagrant_share/#{name}.tar.gz", '-o', "/vagrant_share/#{name}.tar.gz", %Q{"#{source}"})
     # Make deploy dir
     File.directory?("#{doc_root}/#{instance}/extensions/#{name}") or Dir.mkdir("#{doc_root}/#{instance}/extensions/#{name}", 0755)
     # Unpack code to Extensions dir
