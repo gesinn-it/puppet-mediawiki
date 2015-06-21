@@ -122,16 +122,24 @@ define mediawiki::manage_extension(
         ensure    =>  $ensure,
         path      =>  $localsettings_path,
         subscribe =>  File_line["${extension_name}_include"],
-        notify    => Exec["${extension_name}_update_database"],
+        notify    =>  File_line["${extension_name}_footer"],
       }
     }
   } else {
     # dummy exec for calling database update
     exec { "${extension_name}_config_done":
-      command => "/bin/true",
+      command   =>  "/bin/true",
       subscribe =>  File_line["${extension_name}_include"],
-      notify  => Exec["${extension_name}_update_database"],
+      notify    =>  File_line["${extension_name}_footer"],
     }
+  }
+  
+  ## Add extension footer to LocalSettings.php
+  file_line { "${extension_name}_footer":
+    line    =>  "## ======== ${extension_name} ========\n\n",
+    ensure  =>  $ensure,
+    path    =>  $localsettings_path,
+    notify  =>  Exec["${extension_name}_update_database"],
   }
   
   ## Update the database
