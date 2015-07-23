@@ -177,15 +177,6 @@ class mediawiki (
   Class['mysql::server'] -> Class['mediawiki']
   #Class['mysql::config'] -> Class['mediawiki']
   
-  class { 'composer':
-    command_name => 'composer',
-    target_dir   => '/usr/local/bin',
-    auto_update => true,
-  }
-  file { "/etc/environment":
-    content => inline_template("COMPOSER_HOME=/usr/local/bin")
-  }
-  
   class { 'apache': 
     mpm_module => 'prefork',
   }
@@ -209,10 +200,22 @@ class mediawiki (
     }
   }
 
+  # Install packages as defined in params.pp
   package { $mediawiki::params::packages:
     ensure  => $package_ensure,
   }
   Package[$mediawiki::params::packages] ~> Service<| title == $mediawiki::params::apache |>
+  
+  # Install composer after php has been installed
+  class { 'composer':
+    command_name => 'composer',
+    target_dir   => '/usr/local/bin',
+    auto_update => true,
+    require => Package["$mediawiki::params::packages"],
+  }
+  file { "/etc/environment":
+    content => inline_template("COMPOSER_HOME=/usr/local/bin")
+  }
 
   # Make sure the directories and files common for all instances are included
   file { 'mediawiki_conf_dir':
