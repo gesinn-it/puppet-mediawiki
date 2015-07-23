@@ -211,7 +211,7 @@ class mediawiki (
     command_name => 'composer',
     target_dir   => '/usr/local/bin',
     auto_update => true,
-    require => Package["$mediawiki::params::packages"],
+    require => Package[$mediawiki::params::packages],
   }
   file { "/etc/environment":
     content => inline_template("COMPOSER_HOME=/usr/local/bin")
