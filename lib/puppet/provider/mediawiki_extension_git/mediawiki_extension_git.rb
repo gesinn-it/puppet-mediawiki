@@ -45,8 +45,10 @@ Puppet::Type.type(:mediawiki_extension_git).provide(:mediawiki_extension_git) do
       # Update / Init Submodules
       git('submodule', 'update', '--init')
     end
-    
-    ln('-snf', "#{name}-", "#{name}")
+
+    Dir.chdir("#{doc_root}/#{instance}/extensions") do    
+      ln('-snf', "#{name}-", "#{name}")
+    end
   end
 
   def destroy
