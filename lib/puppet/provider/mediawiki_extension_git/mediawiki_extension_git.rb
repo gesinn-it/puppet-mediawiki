@@ -3,6 +3,7 @@ Puppet::Type.type(:mediawiki_extension_git).provide(:mediawiki_extension_git) do
   desc = "Manage Media Wiki Extensions via Git"
 
   commands :git  => "git"
+  commands :ln   => "ln"
   commands :rm   => "rm"
 
 #  confine :osfamily => :RedHat
@@ -35,18 +36,21 @@ Puppet::Type.type(:mediawiki_extension_git).provide(:mediawiki_extension_git) do
 
   def create
     # Clone
-    git('clone', "#{source}", "#{doc_root}/#{instance}/extensions/#{name}")
+    git('clone', "#{source}", "#{doc_root}/#{instance}/extensions/#{name}-")
     
-    Dir.chdir("#{doc_root}/#{instance}/extensions/#{name}") do
+    Dir.chdir("#{doc_root}/#{instance}/extensions/#{name}-") do
       # Checkout
       git('checkout', "#{source_version}")
     
       # Update / Init Submodules
       git('submodule', 'update', '--init')
     end
+    
+    ln('-snf', "#{name}-", "#{name}")
   end
 
   def destroy
+    rm('-rf', "#{doc_root}/extensions/#{name}-")
     rm('-rf', "#{doc_root}/extensions/#{name}")
   end
 end
