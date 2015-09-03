@@ -111,8 +111,8 @@ define mediawiki::manage_extension(
     }
     wfLoadExtension: {
       case $install_type {
-        tar:      { $line = "wfLoadExtension( \"\${extension_name}\" );" }
-        git:      { $line = "wfLoadExtension( \"\${extension_name}\" );" }
+        tar:      { $line = "wfLoadExtension( \"${extension_name}\" );" }
+        git:      { $line = "wfLoadExtension( \"${extension_name}\" );" }
         composer: { $line = "# ${extension_name} included via Composer" }
         default:  { fail("Unknown extension install type. Allowed values: tar")}
       }
