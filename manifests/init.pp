@@ -43,6 +43,7 @@ define mediawiki::manage_extension(
   $extension_name,
   $extension_config = "",
   $install_type,
+  $registration_type = "require_once",
  ){
 
   $localsettings_path = "${doc_root}/${instance}/LocalSettings.php"
@@ -99,11 +100,23 @@ define mediawiki::manage_extension(
   }
 
   ## Add extension to LocalSettings.php
-  case $install_type {
-    tar:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
-    git:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
-    composer: { $line = "# ${extension_name} included via Composer" }
-    default:  { fail("Unknown extension install type. Allowed values: tar")}
+  case $registration_type {
+    require_once: {
+      case $install_type {
+        tar:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
+        git:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
+        composer: { $line = "# ${extension_name} included via Composer" }
+        default:  { fail("Unknown extension install type. Allowed values: tar")}
+      }
+    }
+    wfLoadExtension: {
+      case $install_type {
+        tar:      { $line = "wfLoadExtension( \"\${extension_name}\" );" }
+        git:      { $line = "wfLoadExtension( \"\${extension_name}\" );" }
+        composer: { $line = "# ${extension_name} included via Composer" }
+        default:  { fail("Unknown extension install type. Allowed values: tar")}
+      }
+    }
   }
 
   file_line { "${extension_name}_include":
