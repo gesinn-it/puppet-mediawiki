@@ -240,10 +240,10 @@ class mediawiki (
     require => Package[$mediawiki::params::packages],
   }  
   
-  # Download and install MediaWiki from a tarball using axel with 4 connections
+  # Download and install MediaWiki from a tarball using aria with 4 connections
   exec { "get-mediawiki":
     cwd       => $temp_dir,
-    command   => "/usr/bin/axel -n 4 ${tarball_url}/${tarball}",
+    command   => "/usr/bin/aria2c -s 4 ${tarball_url}/${tarball}",
     creates   => "${temp_dir}/${tarball}",
     subscribe => File['mediawiki_conf_dir'],
     timeout   => 0,
