@@ -12,6 +12,10 @@ Puppet::Type.newtype(:mediawiki_extension) do
     newparam(:source) do
       desc "The location of the Extension to be loaded."
     end
+    
+    newparam(:stripcomponents) do
+      desc "strip NUMBER leading components from file names on extraction"
+    end    
  
     newparam(:instance) do
       desc "MediaWiki puppet instance identifier."
