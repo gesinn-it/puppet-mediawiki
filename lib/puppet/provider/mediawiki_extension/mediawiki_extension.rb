@@ -22,8 +22,8 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
     resource[:source]
   end
 
-  def stripcomponents
-    resource[:stripcomponents]
+  def strip_components
+    resource[:strip_components]
   end
   
   def instance
@@ -46,7 +46,7 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
     File.directory?("#{doc_root}/#{instance}/extensions/#{name}") or Dir.mkdir("#{doc_root}/#{instance}/extensions/#{name}", 0755)
     
     # Unpack code to Extensions dir
-    tar('-xzf', "/vagrant_share/tmp/#{name}.tar.gz", '--strip-components', '#{stripcomponents}' '-C', "#{doc_root}/#{instance}/extensions/#{name}")
+    tar('-xzf', "/vagrant_share/tmp/#{name}.tar.gz", '--strip-components', '#{strip_components}' '-C', "#{doc_root}/#{instance}/extensions/#{name}")
     
     # sync db
     #php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
