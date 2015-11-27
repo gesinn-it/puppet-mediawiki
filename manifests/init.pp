@@ -43,7 +43,7 @@ define mediawiki::manage_extension(
   $extension_name,
   $extension_config = "",
   $install_type,
-  $strip_component = 0,
+  $strip_components = 0,
   $registration_type = "require_once",
  ){
 
@@ -73,13 +73,13 @@ define mediawiki::manage_extension(
     }
     tar: {
       mediawiki_extension { "${extension_name}":
-        ensure          => present,
-        instance        => $instance,
-        source          => $source,
-        strip_component => $strip_component,
-        doc_root        => $doc_root, 
-        #before         => File_line["${extension_name}_include"],
-        notify          => Exec["set_${extension_name}_perms"],
+        ensure           => present,
+        instance         => $instance,
+        source           => $source,
+        strip_components => $strip_components,
+        doc_root         => $doc_root, 
+        #before          => File_line["${extension_name}_include"],
+        notify           => Exec["set_${extension_name}_perms"],
       }
     }
     default: {
