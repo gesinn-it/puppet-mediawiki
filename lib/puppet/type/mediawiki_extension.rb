@@ -13,7 +13,7 @@ Puppet::Type.newtype(:mediawiki_extension) do
       desc "The location of the Extension to be loaded."
     end
     
-    newparam(:stripcomponents) do
+    newparam(:strip_components) do
       desc "strip NUMBER leading components from file names on extraction"
     end    
  
