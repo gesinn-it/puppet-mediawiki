@@ -15,6 +15,7 @@ Puppet::Type.newtype(:mediawiki_extension) do
     
     newparam(:strip_components) do
       desc "strip NUMBER leading components from file names on extraction"
+      defaultto 0
     end    
  
     newparam(:instance) do
