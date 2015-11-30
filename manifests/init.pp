@@ -43,7 +43,7 @@ define mediawiki::manage_extension(
   $extension_name,
   $extension_config = "",
   $install_type,
-  $strip_components = 0,
+  $strip_components = "0",
   $registration_type = "require_once",
  ){
 
