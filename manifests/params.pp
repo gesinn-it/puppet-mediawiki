@@ -66,14 +66,14 @@ class mediawiki::params {
     debian:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php5', 'php5-mysql', 'wget', 'aria2']
+      $packages           = ['php5', 'php5-mysql', 'php5-intl', 'wget', 'aria2']
       $apache             = 'apache2'
       $apache_user        = 'www-data'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php5', 'php5-mysql', 'wget', 'aria2']
+      $packages           = ['php5', 'php5-mysql', 'php5-intl', 'wget', 'aria2']
       $apache             = 'apache2'
       $apache_user        = 'www-data'
     }
