@@ -230,6 +230,7 @@ class mediawiki (
     command_name => 'composer',
     target_dir   => '/usr/local/bin',
     auto_update => false,
+    version => '1.0.0-alpha11',
     require => [
       Package[$mediawiki::params::packages],
       File['/etc/profile.d/set-composer_home.sh'],
