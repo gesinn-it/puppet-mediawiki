@@ -221,9 +221,9 @@ class mediawiki (
   }
   Package[$mediawiki::params::packages] ~> Service<| title == $mediawiki::params::apache |>
   
-  file { '/etc/profile.d/set-composer_home.sh':
-    content => 'export COMPOSER_HOME=/usr/local/bin'
-  }
+  #file { '/etc/profile.d/set-composer_home.sh':
+  #  content => 'export COMPOSER_HOME=/usr/local/bin'
+  #}
   
   # Install composer after php has been installed
   class { 'composer':
@@ -231,10 +231,7 @@ class mediawiki (
     target_dir   => '/usr/local/bin',
     auto_update => false,
     version => '1.0.0-alpha11',
-    require => [
-      Package[$mediawiki::params::packages],
-      File['/etc/profile.d/set-composer_home.sh'],
-    ]
+    require => Package[$mediawiki::params::packages],
   }
 
   # Make sure the directories and files common for all instances are included
