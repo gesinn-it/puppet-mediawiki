@@ -200,7 +200,7 @@ class mediawiki (
   
   # Manages the mysql server package and service by default
   class { 'mysql::server':
-    package_ensure => '5.6'
+    package_ensure => '5.6',
     root_password => $db_root_password,
     override_options => {
       'client' => {
