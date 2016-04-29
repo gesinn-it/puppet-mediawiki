@@ -312,7 +312,7 @@ AcOphrnJ
   
   # Manages the mysql server package and service by default
   class { 'mysql::server':
-    require => Apt::source ['mysql-server-56'],
+    require => Apt::Source['mysql-server-56'],
     package_name => 'mysql-server-5.6',
     root_password => $db_root_password,
     override_options => {
