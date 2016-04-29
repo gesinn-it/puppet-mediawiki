@@ -189,7 +189,7 @@ class mediawiki (
   $mediawiki_install_path   = "${web_dir}/${mediawiki_dir}"
   
   # Specify dependencies
-  Class['mysql::server'] -> Class['mediawiki']
+  # Class['mysql::server'] -> Class['mediawiki']
   #Class['mysql::config'] -> Class['mediawiki']
   
   # Add MySQL packages to apt
