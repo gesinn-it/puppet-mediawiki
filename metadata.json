@@ -8,6 +8,10 @@
   "project_page": "https://github.com/hexmode/puppet-mediawiki",
   "dependencies": [
     {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 2.2.2"
+    }
+    {
       "name": "puppetlabs/apache",
       "version_requirement": ">= 0.4.0"
     },
