@@ -195,10 +195,10 @@ class mediawiki (
   # Add MySQL packages to apt
   apt::source { 'mysql-server-56':
     comment  => 'MySQL Server 5.6.x',
-    location => "http://repo.mysql.com/apt/$::osfamily",
-    release  => "$::lsbdistcodename",
+    location => downcase("http://repo.mysql.com/apt/$::osfamily"),
+    release  => downcase("$::lsbdistcodename"),
     repos    => 'mysql-5.6',
-    architecture => "$::architecture",
+    architecture => downcase("$::architecture"),
     key      => {
       id     => '5072E1F5',
       content => '-----BEGIN PGP PUBLIC KEY BLOCK-----
