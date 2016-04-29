@@ -193,12 +193,6 @@ class mediawiki (
   #Class['mysql::config'] -> Class['mediawiki']
   
   # Add MySQL packages to apt
-  class { 'apt':
-    update => {
-      frequency => 'always',
-    },
-  }
-  ->
   apt::source { 'mysql-server-56':
     comment  => 'MySQL Server 5.6.x',
     location => "http://repo.mysql.com/apt/<%= $::osfamily.downcase %>",
@@ -318,6 +312,7 @@ AcOphrnJ
   
   # Manages the mysql server package and service by default
   class { 'mysql::server':
+    require => Apt::source ['mysql-server-56'],
     package_name => 'mysql-server-5.6',
     root_password => $db_root_password,
     override_options => {
