@@ -300,7 +300,7 @@ AcOphrnJ
     },
   }
   ->
-  exec { "apt-update":
+  exec { "apt-update-mysql":
     command => "/usr/bin/apt-get update"
   }
   
