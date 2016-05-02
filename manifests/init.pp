@@ -307,7 +307,7 @@ AcOphrnJ
   class { 'apache': 
     mpm_module => 'prefork',
   }
-  class { 'apache::mod::php': }
+  include apache::mod::php
   
   
   # Manages the mysql server package and service by default
