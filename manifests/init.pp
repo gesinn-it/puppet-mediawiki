@@ -307,7 +307,12 @@ AcOphrnJ
   class { 'apache': 
     mpm_module => 'prefork',
   }
-  include apache::mod::php
+  
+  # apache::mod::php does not set the proper library path on Debian Jessie
+  # see also: https://tickets.puppetlabs.com/browse/MODULES-3130
+  class { 'apache::mod::php':
+    path => '/usr/lib/apache2/modules/libphp5.so',
+  } 
   
   
   # Manages the mysql server package and service by default
