@@ -36,19 +36,22 @@ Puppet::Type.type(:mediawiki_extension).provide(:mediawiki_extension) do
 
 
   def create
-    # Fetch code to tmp using caching
-    # -L: follow redirects
-    # -R: make curl attempt to figure out the timestamp of the remote file, and if that is available make the local file get that same timestamp. 
-    # -z: Request a file that has been modified later than the given time and date of an existing file
+    ## Ensure /vagrant/.tmp directory exists
+    File.directory?("/vagrant/.tmp") or Dir.mkdir("/vagrant/.tmp", 0755)
+    
+    ## Fetch code to tmp using caching
+    ## -L: follow redirects
+    ## -R: make curl attempt to figure out the timestamp of the remote file, and if that is available make the local file get that same timestamp. 
+    ## -z: Request a file that has been modified later than the given time and date of an existing file
     curl('-L', '-R', '-z', "/vagrant/.tmp/#{name}.tar.gz", '-o', "/vagrant/.tmp/#{name}.tar.gz", "#{source}")
     
-    # Make deploy dir
+    ## Ensure deploy directory exists
     File.directory?("#{doc_root}/#{instance}/extensions/#{name}") or Dir.mkdir("#{doc_root}/#{instance}/extensions/#{name}", 0755)
     
-    # Unpack code to Extensions dir
+    ## Unpack code to Extensions dir
     tar('-xzf', "/vagrant/.tmp/#{name}.tar.gz", "--strip-components=#{strip_components}", '-C', "#{doc_root}/#{instance}/extensions/#{name}")
  
-    # sync db
+    ## sync db
     #php("#{doc_root}/#{instance}/maintenance/update.php", '--conf', "#{doc_root}/#{instance}/LocalSettings.php") 
   end
 
