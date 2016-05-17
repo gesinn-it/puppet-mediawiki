@@ -104,9 +104,9 @@ define mediawiki::manage_extension(
 
   ## Add extension to LocalSettings.php
   if $extension_disabled {
-    $extension_disabled_prefix = '#',
+    $extension_disabled_prefix = '#'
   } else {
-    $extension_disabled_prefix = '',
+    $extension_disabled_prefix = ''
   }
   case $registration_type {
     require_once: {
