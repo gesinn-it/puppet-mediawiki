@@ -36,6 +36,7 @@
 
 define mediawiki::manage_extension(
   $ensure,
+  $extension_disabled = false,
   $instance,
   $source,
   $source_version = "",
@@ -102,19 +103,24 @@ define mediawiki::manage_extension(
   }
 
   ## Add extension to LocalSettings.php
+  if $extension_disabled {
+    $extension_disabled_prefix = '#',
+  } else {
+    $extension_disabled_prefix = '',
+  }
   case $registration_type {
     require_once: {
       case $install_type {
-        tar:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
-        git:      { $line = "require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
+        tar:      { $line = "${extension_disabled_prefix} require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
+        git:      { $line = "${extension_disabled_prefix} require_once( \"\$IP/extensions/${extension_name}/${extension_name}.php\" );" }
         composer: { $line = "# ${extension_name} included via Composer" }
         default:  { fail("Unknown extension install type. Allowed values: tar")}
       }
     }
     wfLoadExtension: {
       case $install_type {
-        tar:      { $line = "wfLoadExtension( \"${extension_name}\" );" }
-        git:      { $line = "wfLoadExtension( \"${extension_name}\" );" }
+        tar:      { $line = "${extension_disabled_prefix} wfLoadExtension( \"${extension_name}\" );" }
+        git:      { $line = "${extension_disabled_prefix} wfLoadExtension( \"${extension_name}\" );" }
         composer: { $line = "# ${extension_name} included via Composer" }
         default:  { fail("Unknown extension install type. Allowed values: tar")}
       }
