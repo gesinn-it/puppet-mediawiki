@@ -55,25 +55,26 @@ class mediawiki::params {
                          'thumb.php5',
                          'wiki.phtml']
   
+  # wget package comes with willdurand/puppet-composer, so don't add it to $packages to avoid 'Duplicate declaration' error
   case $::operatingsystem {
     redhat, centos:  {
       $web_dir            = '/var/www/html'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php-gd', 'php-mysql', 'php-xml', 'wget', 'aria2', 'php-pecl-apcu', 'php-intl']
+      $packages           = ['php-gd', 'php-mysql', 'php-xml', 'aria2', 'php-pecl-apcu', 'php-intl']
       $apache             = 'httpd'
       $apache_user        = 'apache'
     }
     debian:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php5', 'php5-mysql', 'php5-intl', 'php5-gd', 'wget', 'aria2']
+      $packages           = ['php5', 'php5-mysql', 'php5-intl', 'php5-gd', 'aria2']
       $apache             = 'apache2'
       $apache_user        = 'www-data'
     }
     ubuntu:  {
       $web_dir            = '/var/www'
       $doc_root           = "${web_dir}/wikis"
-      $packages           = ['php5', 'php5-mysql', 'php5-intl', 'php5-gd', 'wget', 'aria2']
+      $packages           = ['php5', 'php5-mysql', 'php5-intl', 'php5-gd', 'aria2']
       $apache             = 'apache2'
       $apache_user        = 'www-data'
     }
