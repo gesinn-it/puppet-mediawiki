@@ -355,7 +355,7 @@ AcOphrnJ
     command_name => 'composer',
     target_dir   => '/usr/local/bin',
     auto_update => false,
-    version => '1.0.0-alpha11',
+    version => '1.1.3',
     require => Package[$mediawiki::params::packages],
   }
 
